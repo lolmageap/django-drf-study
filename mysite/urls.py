@@ -17,16 +17,20 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from tutorial.quickstart.views import UserViewSet
 
-from mysite.views import HomeView
-
+router = DefaultRouter()
+router.register('users', UserViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # shkim
-    path('', HomeView.as_view(), name='home'),
+    # path('', HomeView.as_view(), name='home'),
+    path('', include(router.urls)),
     path('blog/', include('blog.urls')),
     path('api/', include('api.urls')),
+
+    path('api-auth/', include('rest_framework.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
